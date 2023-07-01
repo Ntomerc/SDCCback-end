@@ -1,0 +1,55 @@
+spring:
+  cloud:
+    azure:
+      cosmos:
+        uri: https://db-azienda.documents.azure.com:443/
+        key: Q2RQT6KmKS3nNA88KuTIjkRH1wB0B7BjSw6Z1P7lBsx6GZa23z3jDYYRY8y56H1LTWsgMs6NcxWeACDbDUlyoA==
+        database: Utenti
+      active-directory:
+        b2c:
+          enabled: true
+          base-uri: https://progettoAziendaMercuri.b2clogin.com/progettoAziendaMercuri.onmicrosoft.com/
+          credential:
+            client-id: d6042e84-3cc7-4cab-b72b-724b51b1114b
+            client-secret: 'Y-k8Q~64k2IJ9g1Lc_Mm45lhxv3rXQ-MIJv4jdx9'
+          login-flow: sign-up-or-sign-in
+          user-flows:
+            sign-up-or-sign-in: B2C_1_utenti-progetto
+          user-name-attribute-name: progettoAziendaMercuri
+      storage:
+        blob:
+          account-name: blobprogetto
+          endpoint: https://blobprogetto.blob.core.windows.net/
+  security:
+    oauth2:
+      client:
+        registration:
+          b2c:
+            provider: b2c
+            client-id: d6042e84-3cc7-4cab-b72b-724b51b1114b
+            client-secret: 'Y-k8Q~64k2IJ9g1Lc_Mm45lhxv3rXQ-MIJv4jdx9'
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            scope: openid
+        provider:
+          b2c:
+            authorization-uri: https://progettoAziendaMercuri.b2clogin.com/progettoAziendaMercuri.onmicrosoft.com/b2c_1_utenti-progetto/oauth2/v2.0/authorize
+            token-uri: https://progettoAziendaMercuri.b2clogin.com/progettoAziendaMercuri.onmicrosoft.com/b2c_1_utenti-progetto/oauth2/v2.0/token
+            jwk-set-uri: https://progettoaziendamercuri.b2clogin.com/progettoaziendamercuri.onmicrosoft.com/b2c_1_utenti-progetto/discovery/v2.0/keys
+
+
+
+  application:
+    name: progettoAzienda
+
+
+azure:
+  cosmos:
+    secondaryKey: EXyqfB6K02MRgA8EHtUOiwSJLRaqmcvx5IOmnSStfdV0a51nNdwovBgLTnN1z2DgDcGBnc3MpwaqACDbvfUuRg==
+    queryMetricsEnabled: true
+    maxBufferedItemCount: 0
+    responseContinuationTokenLimitInKb: 1000
+    maxDegreeOfParallelism: -1
+
+
+
