@@ -18,10 +18,11 @@ public class Acquisto {
     String email;
     Integer annoFiscaleDiRiferimento;
     String ricevuta;
+    String nomeFile;
     public Acquisto(){
 
     }
-    public Acquisto (String nomeProdotto, String descrizione, double prezzo, String categoria, String idUser, String email, Integer annoFiscaleDiRiferimento, String ricevuta){
+    public Acquisto (String nomeProdotto, String descrizione, double prezzo, String categoria, String idUser, String email, Integer annoFiscaleDiRiferimento, String ricevuta, String nomeFile){
         this.categoria=categoria;
         this.prezzo=prezzo;
         this.descrizione=descrizione;
@@ -30,6 +31,7 @@ public class Acquisto {
         this.email=email;
         this.annoFiscaleDiRiferimento=annoFiscaleDiRiferimento;
         this.ricevuta=ricevuta;
+        this.nomeFile=nomeFile;
     }
     //documento Ricevuta
 

@@ -74,12 +74,6 @@ public class CosmosDBConfiguration extends AbstractCosmosConfiguration {
                 .build();
     }
 
-   /* @Override
-    public CosmosConfig cosmosConfig() {
-        return CosmosConfig.builder()
-                .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                .build();
-    }*/
     public void switchToSecondaryKey() {
         this.azureKeyCredential.update(secondaryKey);
     }

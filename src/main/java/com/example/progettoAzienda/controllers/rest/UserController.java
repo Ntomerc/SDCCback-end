@@ -69,10 +69,7 @@ public class UserController {
         String firstName= claims.getStringClaim("given_name");
         String email = claims.getStringListClaim("emails").get(0);
         //Reindirizzare la richiesta alla pagina di Flutter. Fin quando non fai il deploy cambiare la porta
-        String welcomePageFlutter = "http://localhost:55733/#/welcome?name="+firstName+"&"+"email="+email;
-        response.setStatus(HttpServletResponse.SC_FOUND);
-        response.setHeader("Location", welcomePageFlutter);
-        response.setContentLength(0);
+
         if (userService.esisteUtente(email)==false){
             String compleanno=claims.getStringClaim("extension_Compleanno");
             String numeroTelefono=claims.getStringClaim("extension_Numeroditelefono");
@@ -98,7 +95,17 @@ public class UserController {
             user.setYear(anni);
             System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"+user);
             User added = userService.registerUser(user);
+            String welcomePageFlutter = "https://progettoaziendamercuri.b2clogin.com/progettoaziendamercuri.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_utenti-progetto&client_id=d6042e84-3cc7-4cab-b72b-724b51b1114b&nonce=defaultNonce&redirect_uri=https%3A%2F%2Faziendaapp.azurewebsites.net%2Fusers%2Fregister&scope=openid&response_type=id_token&response_mode=query&prompt=login";
+            response.setStatus(HttpServletResponse.SC_FOUND);
+            response.setHeader("Location", welcomePageFlutter);
+            response.setContentLength(0);
 
+        }
+        else{
+        String welcomePageFlutter = "https://salmon-ground-03957ce10.3.azurestaticapps.net/#/welcome?name="+firstName+"&"+"email="+email;
+        response.setStatus(HttpServletResponse.SC_FOUND);
+        response.setHeader("Location", welcomePageFlutter);
+        response.setContentLength(0);
         }
         return "Helloo!";
 
@@ -172,73 +179,26 @@ public class UserController {
     }
 
 
-
-
-
-
-
-
-
-    /*public ResponseEntity<byte[]> downloadFolder(@RequestParam("folderName") String folderName) {
-        try {
-            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-            BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient("azienda");
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ZipArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(baos);
-
-            Iterable<BlobItem> blobs = containerClient.listBlobsByHierarchy( folderName + "/");
-
-            for (BlobItem blobItem : blobs) {
-                if (!blobItem.isPrefix()) {
-                    String fileName = blobItem.getName();
-
-                    BlobClient blobClient = containerClient.getBlobClient(fileName);
-                    BinaryData fileContent = blobClient.downloadContent();
-                    byte[] fileBytes = ((BinaryData) fileContent).toBytes();
-
-                    ZipArchiveEntry zipEntry = new ZipArchiveEntry(fileName);
-                    zipOutputStream.putArchiveEntry(zipEntry);
-                    zipOutputStream.write(fileBytes);
-                    zipOutputStream.closeArchiveEntry();
-                }
-            }
-
-            zipOutputStream.finish();
-            zipOutputStream.close();
-
-            byte[] zipBytes = baos.toByteArray();
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentDispositionFormData("attachment", folderName + ".zip");
-
-            return new ResponseEntity<>(zipBytes, headers, HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-
-        }
-
-    }*/
-
-    /*public ResponseEntity<byte[]> downloadFile(@RequestParam("fileName") String fileName, String email) {
+    @GetMapping("/downloadFile")
+    public ResponseEntity<byte[]> downloadFile(@RequestParam("nomeFile") String nomeFile, String email) {
         try {
 
 
             BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient("azienda");
-            BlobClient blobClient = containerClient.getBlobClient(email + "/"+fileName);
+            BlobClient blobClient = containerClient.getBlobClient(email + "/"+nomeFile);
 
             BinaryData fileContent = blobClient.downloadContent();
             byte[] bytes = ((BinaryData) fileContent).toBytes();
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentDispositionFormData("attachment", fileName);
-            FileOutputStream outputStream = new FileOutputStream("C:\\Users\\PC-1-\\Desktop\\"+fileName);
+            headers.setContentDispositionFormData("attachment", nomeFile);
+            FileOutputStream outputStream = new FileOutputStream("C:/Users/PC-1-/Desktop/"+nomeFile);
             outputStream.write(bytes);
             outputStream.close();
             return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-    }*/
+    }
     @GetMapping("/user")
     public User getUser(@RequestParam(value= "email") String email) {
         System.out.println("CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+userService.showUser(email));
